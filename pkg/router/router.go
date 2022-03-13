@@ -10,4 +10,5 @@ func InitRouter(r *gin.Engine) {
 	middleware.InitMiddleware(r)
 	r.GET("/ping", apis.Ping)
 	r.GET("/namespaces", apis.GetNamespaces)
+	r.GET("/pods", apis.GetPods)
 }
