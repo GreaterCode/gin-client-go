@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/gin-gonic/gin v1.7.7
+	github.com/gorilla/websocket v1.4.2
 	gopkg.in/yaml.v2 v2.4.0
 	k8s.io/api v0.23.4
 	k8s.io/apimachinery v0.23.4
