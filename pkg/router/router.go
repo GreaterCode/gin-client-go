@@ -11,5 +11,5 @@ func InitRouter(r *gin.Engine) {
 	r.GET("/ping", apis.Ping)
 	r.GET("/namespaces", apis.GetNamespaces)
 	r.GET("/namespace/:namespaceName/pods", apis.GetPods)
-	r.GET("/namespaces/:namespaceName/pod/:podName/container/:containerName", apis.ExecContainer)
+	//r.GET("/namespaces/:namespaceName/pod/:podName/container/:containerName", apis.ExecContainer)
 }

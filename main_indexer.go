@@ -8,10 +8,11 @@ import (
 	"k8s.io/client-go/tools/cache"
 )
 
+// indexer practice
 const NamespaceIndexName = "namespace"
 const NodeNameIndexName = "nodename"
 
-func main() {
+func main5() {
 	// indexers: {
 	//    	"namespace": NamespaceIndexFunc,
 	// 	   	"nodeName": "NodeNameIndexFunc",
@@ -29,11 +30,11 @@ func main() {
 
 	index := cache.NewIndexer(cache.MetaNamespaceKeyFunc, cache.Indexers{
 		NamespaceIndexName: NamespaceIndexFunc,
-		NodeNameIndexName: NodeNameIndexFunc,
+		NodeNameIndexName:  NodeNameIndexFunc,
 	})
 	pod1 := &v1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "index-pod-1",
+			Name:      "index-pod-1",
 			Namespace: "default",
 		},
 		Spec: v1.PodSpec{NodeName: "node1"},
@@ -41,23 +42,23 @@ func main() {
 
 	pod2 := &v1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "index-pod-2",
+			Name:      "index-pod-2",
 			Namespace: "default",
 		},
 		Spec: v1.PodSpec{NodeName: "node2"},
 	}
 
-	pod3:= &v1.Pod{
+	pod3 := &v1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: "index-pod-3",
+			Name:      "index-pod-3",
 			Namespace: "kube-system",
 		},
 		Spec: v1.PodSpec{NodeName: "node3"},
 	}
 
-	_  = index.Add(pod1)
-	_  = index.Add(pod2)
-	_  = index.Add(pod3)
+	_ = index.Add(pod1)
+	_ = index.Add(pod2)
+	_ = index.Add(pod3)
 
 	fmt.Println("-----------根据Namespace查询------------")
 	// ByIndex：IndexName和IndexKey
@@ -65,7 +66,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	for _,  pod := range pods {
+	for _, pod := range pods {
 		fmt.Println(pod.(*v1.Pod).Name)
 	}
 
@@ -75,15 +76,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	for _,  pod := range pods {
+	for _, pod := range pods {
 		fmt.Println(pod.(*v1.Pod).Name)
 	}
-
 
 }
 
 func NodeNameIndexFunc(obj interface{}) ([]string, error) {
-	pod, ok :=  obj.(*v1.Pod)
+	pod, ok := obj.(*v1.Pod)
 	if !ok {
 		return []string{}, nil
 	}

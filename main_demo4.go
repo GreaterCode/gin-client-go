@@ -15,7 +15,8 @@ import (
 	"time"
 )
 
-func main() {
+// informer示例
+func main4() {
 	var err error
 	var config *rest.Config
 	var kubeconfig *string
@@ -23,7 +24,7 @@ func main() {
 	if home := homedir.HomeDir(); home != "" {
 		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "absolute path to kubeconfig file")
 	} else {
-		kubeconfig = flag.String("kubeconfig", "","absolute path to kubeconfig file")
+		kubeconfig = flag.String("kubeconfig", "", "absolute path to kubeconfig file")
 	}
 
 	flag.Parse()
@@ -43,7 +44,7 @@ func main() {
 	}
 
 	// 初始化informer factory(为了测试方便这里设置每30s重新List一次)
-	informerFactory := informers.NewSharedInformerFactory(clientset, time.Second * 30)
+	informerFactory := informers.NewSharedInformerFactory(clientset, time.Second*30)
 	// 对Deployment监听
 	deployInformer := informerFactory.Apps().V1().Deployments()
 	// 创建Informer（相当于注册到工厂中去，这样下面启动的时候就会失去List && Watch对应的资源）
@@ -52,7 +53,7 @@ func main() {
 	deployLister := deployInformer.Lister()
 
 	informer.AddEventHandler(cache.ResourceEventHandlerFuncs{
-		AddFunc: onAdd,
+		AddFunc:    onAdd,
 		UpdateFunc: onUpdate,
 		DeleteFunc: onDelete,
 	})
@@ -66,7 +67,7 @@ func main() {
 	informerFactory.WaitForCacheSync(stopper)
 
 	//从本地缓存中获取default中所有的deployment列表
-	deployments, err :=  deployLister.Deployments("default").List(labels.Everything())
+	deployments, err := deployLister.Deployments("default").List(labels.Everything())
 	if err != nil {
 		panic(err)
 	}
@@ -84,7 +85,7 @@ func onDelete(obj interface{}) {
 func onUpdate(old, new interface{}) {
 	oldDeploy := old.(*v1.Deployment)
 	newDeploy := new.(*v1.Deployment)
-	fmt.Println("update a deployment:", oldDeploy.Name,newDeploy.Name)
+	fmt.Println("update a deployment:", oldDeploy.Name, newDeploy.Name)
 }
 func onAdd(obj interface{}) {
 	deploy := obj.(*v1.Deployment)
